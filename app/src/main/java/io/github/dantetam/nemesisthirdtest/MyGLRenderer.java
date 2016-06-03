@@ -96,9 +96,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         for (Square sq: shapes) {
             float zDist = 0;
             calendar = Calendar.getInstance();
-            int seconds = calendar.get(Calendar.MILLISECOND);
-            zDist = (float)Math.sin(seconds/(3.14*1000)) * 10 - 5;
-            Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -50, sq.position[0], sq.position[1], sq.position[0]*sq.position[1], 0f, 1.0f, 0.0f);
+            long seconds = System.currentTimeMillis() % 31400;
+            //System.out.println(seconds);
+            float angle = (float)seconds/1000;
+            Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -25, (float)Math.sin(angle)*5 + sq.position[0], (float)Math.cos(angle)*5 + sq.position[1], sq.position[0]*sq.position[1], 0f, 1.0f, 0.0f);
             Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
             sq.draw(mMVPMatrix);
         }
