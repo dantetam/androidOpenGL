@@ -44,8 +44,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
+    //private final float[] mVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
+    private final float[] mModelMatrix = new float[16];
+    private final float[] mScaleMatrix = new float[16];
     private final float[] mRotationMatrix = new float[16];
 
     private float mAngle;
@@ -93,7 +96,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         square2.draw(mMVPMatrix);
         */
 
-        for (Square sq: shapes) {
+        /*for (Square sq: shapes) {
             float zDist = 0;
             calendar = Calendar.getInstance();
             long seconds = System.currentTimeMillis() % 31400;
@@ -101,6 +104,24 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             float angle = (float)seconds/1000;
             Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -25, (float)Math.sin(angle)*5 + sq.position[0], (float)Math.cos(angle)*5 + sq.position[1], sq.position[0]*sq.position[1], 0f, 1.0f, 0.0f);
             Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+            sq.draw(mMVPMatrix);
+        }*/
+
+        float[] vpMatrix = new float[16];
+        float[] translatedMatrix = new float[16];
+
+        for (Square sq: shapes) {
+            Matrix.setLookAtM(mViewMatrix, 0, 5, 5, -20, 5, 5, 0, 0f, 1.0f, 0.0f);
+            Matrix.multiplyMM(vpMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+
+            Matrix.setIdentityM(mModelMatrix, 0);
+            Matrix.translateM(mModelMatrix, 0, sq.position[0], sq.position[1], 0);
+            Matrix.multiplyMM(translatedMatrix, 0, vpMatrix, 0, mModelMatrix, 0);
+
+            Matrix.setIdentityM(mScaleMatrix, 0);
+            Matrix.scaleM(mScaleMatrix, 0, sq.position[0]/10, sq.position[1]/10, 0);
+            Matrix.multiplyMM(mMVPMatrix, 0, translatedMatrix, 0, mScaleMatrix, 0);
+
             sq.draw(mMVPMatrix);
         }
 
