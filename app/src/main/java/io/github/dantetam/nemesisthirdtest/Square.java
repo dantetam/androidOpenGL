@@ -28,16 +28,45 @@ import java.nio.ShortBuffer;
 public class Square {
 
     private final String vertexShaderCode =
-            // This matrix member variable provides a hook to manipulate
-            // the coordinates of the objects that use this vertex shader
-            "uniform mat4 uMVPMatrix;" +
-            "attribute vec4 vPosition;" +
-            "void main() {" +
-            // The matrix must be included as a modifier of gl_Position.
-            // Note that the uMVPMatrix factor *must be first* in order
-            // for the matrix multiplication product to be correct.
-            "  gl_Position = uMVPMatrix * vPosition;" +
-            "}";
+        "uniform mat4 u_MVPMatrix;      \n"     // A constant representing the combined model/view/projection matrix.
+        + "uniform mat4 u_MVMatrix;       \n"     // A constant representing the combined model/view matrix.
+        + "uniform vec3 u_LightPos;       \n"     // The position of the light in eye space.
+
+        + "attribute vec4 a_Position;     \n"     // Per-vertex position information we will pass in.
+        + "attribute vec4 a_Color;        \n"     // Per-vertex color information we will pass in.
+        + "attribute vec3 a_Normal;       \n"     // Per-vertex normal information we will pass in.
+
+        + "varying vec4 v_Color;          \n"     // This will be passed into the fragment shader.
+
+        + "void main()                    \n"     // The entry point for our vertex shader.
+        + "{                              \n"
+
+        // Transform the vertex into eye space.
+        + "   vec3 modelViewVertex = vec3(u_MVMatrix * a_Position);              \n"
+
+        // Transform the normal's orientation into eye space.
+        + "   vec3 modelViewNormal = vec3(u_MVMatrix * vec4(a_Normal, 0.0));     \n"
+
+        // Will be used for attenuation.
+        + "   float distance = length(u_LightPos - modelViewVertex);             \n"
+
+        // Get a lighting direction vector from the light to the vertex.
+        + "   vec3 lightVector = normalize(u_LightPos - modelViewVertex);        \n"
+
+        // Calculate the dot product of the light vector and vertex normal. If the normal and light vector are
+        // pointing in the same direction then it will get max illumination.
+        + "   float diffuse = max(dot(modelViewNormal, lightVector), 0.1);       \n"
+
+        // Attenuate the light based on distance.
+        + "   diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance * distance)));  \n"
+
+        // Multiply the color by the illumination level. It will be interpolated across the triangle.
+        + "   v_Color = a_Color * diffuse;                                       \n"
+
+        // gl_Position is a special variable used to store the final position.
+        // Multiply the vertex by the matrix to get the final point in normalized screen coordinates.
+        + "   gl_Position = u_MVPMatrix * a_Position;                            \n"
+        + "}";
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
@@ -52,6 +81,8 @@ public class Square {
     private int mPositionHandle;
     private int mColorHandle;
     private int mMVPMatrixHandle;
+    private int mMVMatrixHandle;
+    private int mLightPosHandle;
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
@@ -111,12 +142,12 @@ public class Square {
      * @param mvpMatrix - The Model View Project matrix in which to draw
      * this shape.
      */
-    public void draw(float[] mvpMatrix) {
+    public void draw(float[] mvpMatrix, float[] mvMatrix, float[] lightPos) {
         // Add program to OpenGL environment
         GLES20.glUseProgram(mProgram);
 
         // get handle to vertex shader's vPosition member
-        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
+        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
 
         // Enable a handle to the triangle vertices
         GLES20.glEnableVertexAttribArray(mPositionHandle);
@@ -128,17 +159,27 @@ public class Square {
                 vertexStride, vertexBuffer);
 
         // get handle to fragment shader's vColor member
-        mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+        mColorHandle = GLES20.glGetUniformLocation(mProgram, "v_Color");
 
         // Set color for drawing the triangle
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 
         // get handle to shape's transformation matrix
-        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
+        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
         MyGLRenderer.checkGlError("glGetUniformLocation");
-
         // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
+        MyGLRenderer.checkGlError("glUniformMatrix4fv");
+
+        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
+        MyGLRenderer.checkGlError("glGetUniformLocation");
+        GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
+        MyGLRenderer.checkGlError("glUniformMatrix4fv");
+
+        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
+        MyGLRenderer.checkGlError("glGetUniformLocation");
+        GLES20.glUniform3fv(mLightPosHandle, 1, lightPos, 0);
+        //GLES20.glUniformMatrix4fv(mLightPosHandle, 1, false, lightPos, 0);
         MyGLRenderer.checkGlError("glUniformMatrix4fv");
 
         // Draw the square

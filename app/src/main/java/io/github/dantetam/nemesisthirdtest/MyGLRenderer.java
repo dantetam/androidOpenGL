@@ -54,6 +54,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float mAngle;
     private Calendar calendar;
 
+    private final float[] lightPos = {0, 20, -20};
+
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
 
@@ -109,6 +111,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         float[] vpMatrix = new float[16];
         float[] translatedMatrix = new float[16];
+        float[] mvMatrix = new float[16];
 
         for (Square sq: shapes) {
             Matrix.setLookAtM(mViewMatrix, 0, 5, 5, -20, 5, 5, 0, 0f, 1.0f, 0.0f);
@@ -119,10 +122,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             Matrix.multiplyMM(translatedMatrix, 0, vpMatrix, 0, mModelMatrix, 0);
 
             Matrix.setIdentityM(mScaleMatrix, 0);
-            Matrix.scaleM(mScaleMatrix, 0, sq.position[0]/10, sq.position[1]/10, 0);
+            Matrix.scaleM(mScaleMatrix, 0, sq.position[0] / 10, sq.position[1] / 10, 0);
             Matrix.multiplyMM(mMVPMatrix, 0, translatedMatrix, 0, mScaleMatrix, 0);
 
-            sq.draw(mMVPMatrix);
+            Matrix.multiplyMM(mvMatrix, 0, mModelMatrix, 0, mViewMatrix, 0);
+
+            sq.draw(mMVPMatrix, mvMatrix, lightPos);
         }
 
         //if (Math.random() )
