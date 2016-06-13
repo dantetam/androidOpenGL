@@ -55,6 +55,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         float x = e.getX();
         float y = e.getY();
 
+        /*
         switch (e.getAction()) {
             case MotionEvent.ACTION_MOVE:
 
@@ -79,6 +80,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         mPreviousX = x;
         mPreviousY = y;
+        */
+
         return true;
     }
 
