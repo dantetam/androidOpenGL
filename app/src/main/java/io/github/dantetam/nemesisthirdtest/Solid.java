@@ -1,5 +1,7 @@
 package io.github.dantetam.nemesisthirdtest;
 
+import android.opengl.Matrix;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -181,7 +183,7 @@ public class Solid {
 
     private final float[] position = new float[3];
     private final float[] size = new float[3];
-    private final float[] rotation = new float[4]; 
+    private final float[] rotation = new float[4];
 
     public Solid() {
         // Initialize the buffers.
@@ -196,6 +198,25 @@ public class Solid {
         mCubeNormals = ByteBuffer.allocateDirect(cubeNormalData.length * mBytesPerFloat)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         mCubeNormals.put(cubeNormalData).position(0);
+    }
+
+    public void prepareMatrices(float[] mModelMatrix) {
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, position[0], position[1], position[2]);
+        Matrix.scaleM(mModelMatrix, 0, size[0], size[1], size[2]);
+        Matrix.rotateM(mModelMatrix, 0, rotation[0], rotation[1], rotation[2], rotation[3]);
+    }
+
+    public void move(float a, float b, float c) {
+        position[0] = a; position[1] = b; position[2] = c;
+    }
+
+    public void scale(float a, float b, float c) {
+        size[0] = a; size[1] = b; size[2] = c;
+    }
+
+    public void rotate(float angle, float a, float b, float c) {
+        rotation[0] = angle; rotation[1] = a; rotation[2] = b; rotation[3] = c;
     }
 
 }

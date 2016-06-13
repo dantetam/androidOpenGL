@@ -74,9 +74,20 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private int mPerVertexProgramHandle;
     private int mPointProgramHandle;
 
+    public static float randomFloat(int a, int b) {
+        return (float)(Math.random() * (b-a) + a);
+    }
+
     public MyGLRenderer() {
         camera = new Camera();
         solids = new ArrayList<Solid>();
+        for (int i = 0; i < 10; i++) {
+            Solid solid = new Solid();
+            solid.move(randomFloat(-5,5), randomFloat(-5,5), randomFloat(-5,5));
+            solid.scale(randomFloat(-2, 2), randomFloat(-2, 2), randomFloat(-2, 2));
+            solid.rotate(randomFloat(0, 360), randomFloat(-5, 5), randomFloat(-5, 5), randomFloat(-5, 5));
+            solids.add(solid);
+        }
     }
 
     protected String getVertexShader() {
@@ -228,32 +239,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
         Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 
-
-
-        // Draw some cubes.        
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 4.0f, 0.0f, -7.0f);
-        Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 1.0f, 0.0f, 0.0f);
-        drawCube();
-
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, -4.0f, 0.0f, -7.0f);
-        Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 0.0f, 1.0f, 0.0f);
-        drawCube();
-
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, 4.0f, -7.0f);
-        Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 0.0f, 0.0f, 1.0f);
-        drawCube();
-
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, -4.0f, -7.0f);
-        drawCube();
-
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -5.0f);
-        Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 1.0f, 1.0f, 0.0f);
-        drawCube();
+        for (Solid solid: solids) {
+            drawSolid(solid);
+        }
+        // Draw some cubes.
 
         // Draw a point to indicate the light.
         GLES20.glUseProgram(mPointProgramHandle);
@@ -263,7 +252,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     /**
      * Draws a cube.
      */
-    private void drawCube(Solid solid) {
+    private void drawSolid(Solid solid) {
+        solid.prepareMatrices(mModelMatrix);
+
         // Pass in the position information
         solid.mCubePositions.position(0);
         GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
