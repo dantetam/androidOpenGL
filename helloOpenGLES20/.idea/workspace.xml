@@ -41,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLRenderer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="293" column="0" selection-start-line="293" selection-start-column="0" selection-end-line="293" selection-end-column="0" />
+              <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -49,10 +49,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShaderLoader.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Camera.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Camera.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="28" column="34" selection-start-line="28" selection-start-column="34" selection-end-line="28" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ShaderLoader.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/ShaderLoader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.16863406">
+            <state vertical-scroll-proportion="0.0">
               <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -61,11 +71,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Solid.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Solid.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.42664418">
+              <caret line="183" column="51" selection-start-line="183" selection-start-column="51" selection-end-line="183" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -2131,9 +2141,10 @@
         <option value="$PROJECT_DIR$/src/main/java/com/example/android/opengl/Square.java" />
         <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLSurfaceView.java" />
         <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Square.java" />
-        <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java" />
-        <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLRenderer.java" />
         <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/ShaderLoader.java" />
+        <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Camera.java" />
+        <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLRenderer.java" />
+        <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java" />
       </list>
     </option>
   </component>
@@ -2320,18 +2331,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="androidTest" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nemesisthirdtest" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -3038,30 +3037,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java">
+    <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/ShaderLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
+          <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Camera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="34" selection-start-line="28" selection-start-column="34" selection-end-line="28" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLRenderer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="293" column="0" selection-start-line="293" selection-start-column="0" selection-end-line="293" selection-end-column="0" />
+          <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/ShaderLoader.java">
+    <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16863406">
-          <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.42664418">
+          <caret line="183" column="51" selection-start-line="183" selection-start-column="51" selection-end-line="183" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

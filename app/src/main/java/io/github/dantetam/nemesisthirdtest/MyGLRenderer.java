@@ -3,6 +3,8 @@ package io.github.dantetam.nemesisthirdtest;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -23,77 +25,32 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      */
     private static final String TAG = "LessonTwoRenderer";
 
-    /**
-     * Store the model matrix. This matrix is used to move models from object space (where each model can be thought
-     * of being located at the center of the universe) to world space.
-     */
     private float[] mModelMatrix = new float[16];
-
-    /**
-     * Store the view matrix. This can be thought of as our camera. This matrix transforms world space to eye space;
-     * it positions things relative to our eye.
-     */
     private float[] mViewMatrix = new float[16];
-
-    /**
-     * Store the projection matrix. This is used to project the scene onto a 2D viewport.
-     */
     private float[] mProjectionMatrix = new float[16];
-
-    /**
-     * Allocate storage for the final combined matrix. This will be passed into the shader program.
-     */
     private float[] mMVPMatrix = new float[16];
 
-    /**
-     * Stores a copy of the model matrix specifically for the light position.
-     */
     private float[] mLightModelMatrix = new float[16];
 
     /**
-     * This will be used to pass in the transformation matrix.
+     * This will be used to pass in the uniforms and attributes.
      */
     private int mMVPMatrixHandle;
-
-    /**
-     * This will be used to pass in the modelview matrix.
-     */
     private int mMVMatrixHandle;
-
-    /**
-     * This will be used to pass in the light position.
-     */
     private int mLightPosHandle;
-
-    /**
-     * This will be used to pass in model position information.
-     */
     private int mPositionHandle;
-
-    /**
-     * This will be used to pass in model color information.
-     */
     private int mColorHandle;
-
-    /**
-     * This will be used to pass in model normal information.
-     */
     private int mNormalHandle;
 
     /**
-     * Size of the position data in elements.
+     * Size of the data in elements.
      */
     private final int mPositionDataSize = 3;
-
-    /**
-     * Size of the color data in elements.
-     */
     private final int mColorDataSize = 4;
-
-    /**
-     * Size of the normal data in elements.
-     */
     private final int mNormalDataSize = 3;
+
+    private Camera camera;
+    private List<Solid> solids;
 
     /**
      * Used to hold a light centered on the origin in model space. We need a 4th coordinate so we can get translations to work when
@@ -115,17 +72,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * This is a handle to our per-vertex cube shading program.
      */
     private int mPerVertexProgramHandle;
-
-    /**
-     * This is a handle to our light point program.
-     */
     private int mPointProgramHandle;
 
-    /**
-     * Initialize the model data.
-     */
     public MyGLRenderer() {
-
+        camera = new Camera();
+        solids = new ArrayList<Solid>();
     }
 
     protected String getVertexShader() {
@@ -191,25 +142,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Enable depth testing
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
-        // Position the eye in front of the origin.
-        final float eyeX = 0.0f;
-        final float eyeY = 0.0f;
-        final float eyeZ = -0.5f;
-
-        // We are looking toward the distance
-        final float lookX = 0.0f;
-        final float lookY = 0.0f;
-        final float lookZ = -5.0f;
-
-        // Set our up vector. This is where our head would be pointing were we holding the camera.
-        final float upX = 0.0f;
-        final float upY = 1.0f;
-        final float upZ = 0.0f;
-
         // Set the view matrix. This matrix can be said to represent the camera position.
         // NOTE: In OpenGL 1, a ModelView matrix is used, which is a combination of a model and
         // view matrix. In OpenGL 2, we can keep track of these matrices separately if we choose.
-        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
+        camera.moveTo(0, 5, -5);
+        camera.point(0, 0, 20);
+        camera.setViewMatrix(mViewMatrix);
 
         final String vertexShader = getVertexShader();
         final String fragmentShader = getFragmentShader();
@@ -233,11 +171,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         final String pointFragmentShader =
                 "precision mediump float;       \n"
-                        + "void main()                    \n"
-                        + "{                              \n"
-                        + "   gl_FragColor = vec4(1.0,    \n"
-                        + "   1.0, 1.0, 1.0);             \n"
-                        + "}                              \n";
+                        + "void main()"
+                        + "{"
+                        + "   gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);"
+                        + "}";
 
         final int pointVertexShaderHandle = compileShader(GLES20.GL_VERTEX_SHADER, pointVertexShader);
         final int pointFragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, pointFragmentShader);

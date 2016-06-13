@@ -179,6 +179,10 @@ public class Solid {
      */
     private final int mBytesPerFloat = 4;
 
+    private final float[] position = new float[3];
+    private final float[] size = new float[3];
+    private final float[] rotation = new float[4]; 
+
     public Solid() {
         // Initialize the buffers.
         mCubePositions = ByteBuffer.allocateDirect(cubePositionData.length * mBytesPerFloat)
