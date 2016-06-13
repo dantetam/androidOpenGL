@@ -9,6 +9,7 @@ import java.util.List;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -24,6 +25,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * Used for debug logs.
      */
     private static final String TAG = "LessonTwoRenderer";
+    private Context mActivityContext;
 
     private float[] mModelMatrix = new float[16];
     private float[] mViewMatrix = new float[16];
@@ -78,68 +80,34 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return (float)(Math.random() * (b-a) + a);
     }
 
-    public MyGLRenderer() {
+    public MyGLRenderer(Context context) {
+        mActivityContext = context;
         camera = new Camera();
         solids = new ArrayList<Solid>();
         for (int i = 0; i < 10; i++) {
             Solid solid = new Solid();
-            solid.move(randomFloat(-5,5), randomFloat(-5,5), randomFloat(-5,5));
-            solid.scale(randomFloat(-2, 2), randomFloat(-2, 2), randomFloat(-2, 2));
+            solid.move(randomFloat(-5, 5), randomFloat(-5, 5), randomFloat(-5, 5));
+            solid.scale(randomFloat(1, 2), randomFloat(1, 2), randomFloat(1, 2));
             solid.rotate(randomFloat(0, 360), randomFloat(-5, 5), randomFloat(-5, 5), randomFloat(-5, 5));
             solids.add(solid);
         }
     }
 
+    private String vertexShaderMem = null;
     protected String getVertexShader() {
         // TODO: Explain why we normalize the vectors, explain some of the vector math behind it all. Explain what is eye space.
-        final String vertexShader =
-                "uniform mat4 u_MVPMatrix;      \n"        // A constant representing the combined model/view/projection matrix.
-                + "uniform mat4 u_MVMatrix;       \n"        // A constant representing the combined model/view matrix.
-                + "uniform vec3 u_LightPos;       \n"        // The position of the light in eye space.
-
-                + "attribute vec4 a_Position;     \n"        // Per-vertex position information we will pass in.
-                + "attribute vec4 a_Color;        \n"        // Per-vertex color information we will pass in.
-                + "attribute vec3 a_Normal;       \n"        // Per-vertex normal information we will pass in.
-
-                + "varying vec4 v_Color;          \n"        // This will be passed into the fragment shader.
-
-                + "void main()                    \n"    // The entry point for our vertex shader.
-                + "{                              \n"
-                // Transform the vertex into eye space.
-                + "   vec3 modelViewVertex = vec3(u_MVMatrix * a_Position);              \n"
-                // Transform the normal's orientation into eye space.
-                + "   vec3 modelViewNormal = vec3(u_MVMatrix * vec4(a_Normal, 0.0));     \n"
-                // Will be used for attenuation.
-                + "   float distance = length(u_LightPos - modelViewVertex);             \n"
-                // Get a lighting direction vector from the light to the vertex.
-                + "   vec3 lightVector = normalize(u_LightPos - modelViewVertex);        \n"
-                // Calculate the dot product of the light vector and vertex normal. If the normal and light vector are
-                // pointing in the same direction then it will get max illumination.
-                + "   float diffuse = max(dot(modelViewNormal, lightVector), 0.1);       \n"
-                // Attenuate the light based on distance.
-                + "   //diffuse = diffuse * (1.0 / (1.0 + (0.25 * distance * distance)));  \n"
-                // Multiply the color by the illumination level. It will be interpolated across the triangle.
-                + "   v_Color = a_Color * diffuse;                                       \n"
-                // gl_Position is a special variable used to store the final position.
-                // Multiply the vertex by the matrix to get the final point in normalized screen coordinates.
-                + "   gl_Position = u_MVPMatrix * a_Position;                            \n"
-                + "}                                                                     \n";
-
-        return vertexShader;
+        if (vertexShaderMem == null) {
+            vertexShaderMem = ShaderLoader.load(mActivityContext, R.raw.normal_vertex_shader);
+        }
+        return vertexShaderMem;
     }
 
+    private String fragmentShaderMem = null;
     protected String getFragmentShader() {
-        final String fragmentShader =
-                "precision mediump float;       \n"        // Set the default precision to medium. We don't need as high of a 
-                // precision in the fragment shader.
-                + "varying vec4 v_Color;          \n"        // This is the color from the vertex shader interpolated across the
-                // triangle per fragment.
-                + "void main()                    \n"        // The entry point for our fragment shader.
-                + "{                              \n"
-                + "   gl_FragColor = v_Color;     \n"        // Pass the color directly through the pipeline.
-                + "}                              \n";
-
-        return fragmentShader;
+        if (fragmentShaderMem == null) {
+            fragmentShaderMem = ShaderLoader.load(mActivityContext, R.raw.normal_fragment_shader);
+        }
+        return fragmentShaderMem;
     }
 
     @Override
@@ -206,7 +174,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         final float bottom = -1.0f;
         final float top = 1.0f;
         final float near = 1.0f;
-        final float far = 10.0f;
+        final float far = 50.0f;
 
         Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
     }
@@ -241,6 +209,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         for (Solid solid: solids) {
             drawSolid(solid);
+            solid.rotateAngle(solid.angle() + 1);
         }
         // Draw some cubes.
 

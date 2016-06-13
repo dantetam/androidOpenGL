@@ -219,4 +219,11 @@ public class Solid {
         rotation[0] = angle; rotation[1] = a; rotation[2] = b; rotation[3] = c;
     }
 
+    public float angle() {
+        return rotation[0];
+    }
+    public void rotateAngle(float f) {
+        rotation[0] = f;
+    }
+
 }
