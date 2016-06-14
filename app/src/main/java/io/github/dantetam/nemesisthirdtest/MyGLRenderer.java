@@ -124,7 +124,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the view matrix. This matrix can be said to represent the camera position.
         // NOTE: In OpenGL 1, a ModelView matrix is used, which is a combination of a model and
         // view matrix. In OpenGL 2, we can keep track of these matrices separately if we choose.
-        camera.moveTo(0, 5, -5);
+        camera.moveTo(0, 10, -20);
         camera.point(0, 0, 20);
         camera.setViewMatrix(mViewMatrix);
 
@@ -140,20 +140,20 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Define a simple shader program for our point.
         final String pointVertexShader =
                 "uniform mat4 u_MVPMatrix;      \n"
-                        + "attribute vec4 a_Position;     \n"
-                        + "void main()                    \n"
-                        + "{                              \n"
-                        + "   gl_Position = u_MVPMatrix   \n"
-                        + "               * a_Position;   \n"
-                        + "   gl_PointSize = 5.0;         \n"
-                        + "}                              \n";
+                + "attribute vec4 a_Position;     \n"
+                + "void main()                    \n"
+                + "{                              \n"
+                + "   gl_Position = u_MVPMatrix   \n"
+                + "               * a_Position;   \n"
+                + "   gl_PointSize = 5.0;         \n"
+                + "}                              \n";
 
         final String pointFragmentShader =
                 "precision mediump float;       \n"
-                        + "void main()"
-                        + "{"
-                        + "   gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);"
-                        + "}";
+                + "void main()"
+                + "{"
+                + "   gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);"
+                + "}";
 
         final int pointVertexShaderHandle = compileShader(GLES20.GL_VERTEX_SHADER, pointVertexShader);
         final int pointFragmentShaderHandle = compileShader(GLES20.GL_FRAGMENT_SHADER, pointFragmentShader);
