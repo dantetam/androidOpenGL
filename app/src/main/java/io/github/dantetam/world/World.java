@@ -1,14 +1,16 @@
 package io.github.dantetam.world;
 
+import io.github.dantetam.data.QuadTree;
+
 /**
  * Created by Dante on 6/13/2016.
  */
 public class World {
 
-    private QuadTree<Tile> tiles;
+    private QuadTree<Tile, int[]> tiles;
 
     public World(int totalRows, int totalCols) {
-        tiles = new Tile[totalRows][totalCols];
+        tiles = QuadTree();
     }
 
     public void init() {

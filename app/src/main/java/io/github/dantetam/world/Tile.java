@@ -1,12 +1,14 @@
 package io.github.dantetam.world;
 
+import io.github.dantetam.data.TwoWayComparator;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Dante on 6/13/2016.
  */
-public class Tile {
+public class Tile implements TwoWayComparator<Tile> {
 
     public int row, col;
     public int elevation;
@@ -87,5 +89,37 @@ public class Tile {
     public float dist(Tile t) {
         return (float)Math.sqrt(Math.pow(row - t.row, 2) + Math.pow(col - t.col, 2));
     }
+
+    public int compare(Tile a, Tile b) { //Default behavior
+        int dy = compareY(a, b);
+        if (dy != 0) {
+            return dy;
+        }
+        return compareX(a, b);
+    }
+
+    public boolean equals(Object a) {
+        if (!(a instanceof Tile)) {
+            return false;
+        }
+        Tile t = (Tile) a;
+        return row == t.row && col == t.col;
+    }
+
+    public int compareX(Tile a, Tile b) {return a.row - b.row;}
+    public int compareY(Tile a, Tile b) {return a.col - b.col;}
+
+    public Tile[] createChildren() {
+
+    }
+    /**
+     * @param a - First item T ("this")
+     * @param b - Second item T ("other")
+     * @return the default quadrant of b with respect to a,
+     * where mathematical quadrants are mapped respectively as
+     * 2 1 --> 0 1
+     * 3 4 --> 2 3
+     */
+    public int getCompareScores(T a, T b);
 
 }

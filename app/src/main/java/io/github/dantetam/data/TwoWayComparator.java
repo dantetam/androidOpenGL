@@ -2,7 +2,7 @@ package io.github.dantetam.data;
 
 import java.util.Comparator;
 
-interface TwoWayComparator<T> extends Comparator<T> {
+public interface TwoWayComparator<T> extends Comparator<T> {
 
     //Install a 'natural ordering' by chaining x and y compare
     public int compare(T a, T b) ;

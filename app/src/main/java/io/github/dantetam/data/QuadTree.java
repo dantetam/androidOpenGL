@@ -9,69 +9,43 @@ import java.util.List;
  * A utility QuadTree class used for efficiently loading chunks, and finding objects within them
  */
 
-public class QuadTree<T> {
+public abstract class QuadTree<K, V> {
 
-    private Node root;
+    public Node<K, V> root;
 
-    public QuadTree(List<T> data, TwoWayComparator k, int levels) {
-        this(data, new Node(k), levels);
-    }
-
-    private QuadTree(List<T> data, Node r, int levels) {
-        root = r;
-        root.createChildren(levels - 1);
-        for (T t: data) {
-            root.add(t, t.key());
-        }
-    }
-	
-	/*public static Node getNewRoot(Key k) {
-		return new Node(k);
-	}*/
-
-    //Do not expose Node intrinsics to usable QuadTree class
-    private static class Node<T, K extends TwoWayComparator<K>> {
-        public List<T> items;
-        private Node[] children;
-        public K key;
-
-        public Node(K k) {
-            key = k;
-            items = new ArrayList<T>();
-            children = null;
-        }
-
-        public void createChildren(int levelsBelow) {
-            if (levelsBelow <= 0) return;
-            K[] keys = key.createChildren();
-            children = new Node[keys.length];
-            for (int i = 0; i < keys.length; i++) {
-                children[i] = new Node(keys[i]);
-                createChildren(levelsBelow - 1);
+    public Node group(K[][] keys, Node[][] data) {
+        while (true) {
+            K[][] newKeys = (K[][]) new Object[len(keys.length, 2)][len(keys[0].length, 2)];
+            Node[][] newData = (Node[][]) new Object[len(data.length, 2)][len(data[0].length, 2)];
+            for (int i = 0; i < keys.length/2; i++) {
+                for (int j = 0; j < keys[0].length/2; j++) {
+                    K[] neighbors = (K[]) new Object[]{keys[i*2][j*2], keys[i*2][j*2 + 1], keys[i*2 + 1][j*2], keys[i*2 + 1][j*2 + 1]};
+                    newKeys[i][j] = combine(neighbors);
+                    newData[i][j] = new Node(neighbors);
+                }
+            }
+            keys = newKeys;
+            data = newData;
+            if (keys.length == 1 && keys[0].length == 1) {
+                return data[0][0];
             }
         }
+    }
+    private int len(int n, int mod) {
+        int extra = n%mod > 0 ? 1 : 0;
+        return n/mod + extra;
+    }
 
-        public void add(T item, K k) {
-            Node n = traverse(k);
-            if (n != null) n.items.add(item);
+    public abstract K combine(K[] data);
+
+    public class Node<A, B> {
+        public B data;
+        public Node[] children;
+        public Node(Node[] c) {
+            children = c;
         }
-
-        public List<T> get(K k) {
-            Node n = traverse(k);
-            return n == null ? null : n.items;
-        }
-
-        public List<T> getAbsolute(K k) {
-            Node n = traverse(k);
-            if (n == null) return null;
-            if (n.key.equals(k)) return n.items;
-            return null;
-        }
-
-        public Node traverse(K k) {
-            if (key.equals(k) || children == null) return this;
-            int nextChildIndex = key.getCompareScores(key, k);
-            return children[nextChildIndex].traverse(k);
+        public Node(B d) {
+            data = d;
         }
     }
 
