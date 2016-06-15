@@ -5,7 +5,7 @@ package io.github.dantetam.world;
  */
 public class World {
 
-    private Tile[][] tiles;
+    private QuadTree<Tile> tiles;
 
     public World(int totalRows, int totalCols) {
         tiles = new Tile[totalRows][totalCols];
@@ -16,10 +16,10 @@ public class World {
     }
 
     public Tile getTile(int r, int c) {
-        if (r < 0 || c < 0 || r >= tiles.length || c >= tiles[0].length) {
+        /*if (r < 0 || c < 0 || r >= tiles.length || c >= tiles[0].length) {
             throw new IllegalArgumentException("Out of bounds or degenerate grid");
         }
-        return tiles[r][c];
+        return tiles[r][c];*/
     }
 
 }
