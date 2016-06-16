@@ -3,6 +3,7 @@ package io.github.dantetam.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.dantetam.world.Person;
 import io.github.dantetam.world.Tile;
 
 /**
@@ -70,5 +71,30 @@ public class WorldTree extends QuadTree<double[], Tile>{
             temp[1] += data[i][1];
         }
         return new double[]{temp[0]/data.length, temp[1]/data.length};
+    }
+
+    @Override
+    public Node<double[], Tile> traverseForNode(double[] key) {
+        Node<double[], Tile> inspect = root;
+        while (true) {
+            if (inspect == null) {
+                return null;
+            }
+            if (inspect.children == null) {
+                return null; //Handle differently?
+            }
+            double dr = key[0] - inspect.key[0];
+            double dc = key[1] - inspect.key[1];
+            if (dr == 0 && dc == 0) {
+                return inspect;
+            }
+            int index;
+            if (dr < 0) {
+                index = dc < 0 ? 0 : 2;
+            } else {
+                index = dc < 0 ? 1 : 3;
+            }
+            inspect = inspect.children[index];
+        }
     }
 }
