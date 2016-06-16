@@ -10,18 +10,34 @@ import io.github.dantetam.world.Tile;
  */
 public class WorldTree extends QuadTree<double[], Tile>{
 
+    public WorldTree() {
+
+    }
+
+    public void init(Tile[][] tiles) {
+        Node[][] nodes = new Node[tiles.length][tiles[0].length];
+        double[][][] rowCol = new double[tiles.length][tiles[0].length][];
+        for (int r = 0; r < tiles.length; r++) {
+            for (int c = 0; c < tiles[0].length; c++) {
+                nodes[r][c] = new Node(new double[]{r,c}, tiles[r][c]);
+                rowCol[r][c] = new double[]{r,c};
+            }
+        }
+        root = group(rowCol, nodes);
+    }
+
     @Override
     public Node group(double[][][] keys, Node[][] data) {
         while (true) {
             double[][][] newKeys = new double[len(keys.length, 2)][len(keys[0].length, 2)][];
             Node[][] newData = (Node[][]) new Object[len(data.length, 2)][len(data[0].length, 2)];
             for (int i = 0; i < newKeys.length; i++) {
-                for (int j = 0; j < newKeys[0].length/2; j++) {
+                for (int j = 0; j < newKeys[0].length; j++) {
                     ArrayList<double[]> neighbors = new ArrayList<double[]>();
                     double[][] localKeys = new double[][]{
                             new double[]{i * 2, j * 2},
-                            new double[]{i * 2, j * 2 + 1},
                             new double[]{i * 2 + 1, j * 2},
+                            new double[]{i * 2, j * 2 + 1},
                             new double[]{i * 2 + 1, j * 2 + 1}
                     };
                     //keys[i*2][j*2], keys[i*2][j*2 + 1], keys[i*2 + 1][j*2], keys[i*2 + 1][j*2 + 1]
@@ -35,7 +51,7 @@ public class WorldTree extends QuadTree<double[], Tile>{
                     if (inBounds(keys, i*2 + 1, j*2)) neighbors.add(keys[i*2 + 1][j*2]);
                     if (inBounds(keys, i*2 + 1, j*2 + 1)) neighbors.add(keys[i*2 + 1][j*2 + 1]);*/
                     newKeys[i][j] = combine(localKeys);
-                    newData[i][j] = new Node(neighbors);
+                    newData[i][j] = new Node(newKeys[i][j], neighbors);
                 }
             }
             keys = newKeys;

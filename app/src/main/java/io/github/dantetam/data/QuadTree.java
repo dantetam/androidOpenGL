@@ -27,6 +27,9 @@ public abstract class QuadTree<K, V> {
 
     public abstract K combine(K[] data);
 
+    public abstract V search(K key);
+    public abstract V traverseForNode(K key);
+
     /*public int[] combine(int[][] data) {
         double[] temp = {0,0}
         for (int i = 0; i < data.length; i++) {
@@ -35,18 +38,22 @@ public abstract class QuadTree<K, V> {
     }*/
 
     public class Node<A, B> {
+        public A key;
         public B data;
         public Node[] children;
-        public Node(Node[] c) {
+        public Node(A key, Node[] c) {
+            this.key = key;
             children = c;
         }
-        public Node(List<Node> c) {
+        public Node(A key, List<Node> c) {
+            this.key = key;
             children = new Node[c.size()];
             for (int i = 0; i < c.size(); i++) {
                 children[i] = c.get(i);
             }
         }
-        public Node(B d) {
+        public Node(A key, B d) {
+            this.key = key;
             data = d;
         }
     }
