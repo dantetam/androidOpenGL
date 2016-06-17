@@ -22,8 +22,10 @@ public class Entity {
         Tile center = locations.remove(0);
         for (int i = 0; i < locations.size(); i++) {
             Tile old = locations.get(i);
-            Tile new = world.getTile(old.row + deltaX, old.col + deltaY);
+            Tile newLocation = world.getTile(old.row + deltaX, old.col + deltaY);
+            locations.set(i, newLocation);
         }
+        locations.add(0, world.getTile(center.row + deltaX, center.col + deltaY));
     }
 
 }

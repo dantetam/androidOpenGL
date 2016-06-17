@@ -9,11 +9,11 @@ import java.util.List;
 public class Clan {
 
     public String name;
-    public List<People> people;
+    public List<Person> people;
 
     public Clan(String n) {
         name = n;
-        people = new ArrayList<People>();
+        people = new ArrayList<Person>();
     }
 
 }

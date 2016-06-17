@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Dante on 6/13/2016.
  */
-public class Tile implements TwoWayComparator<Tile> {
+public class Tile {
 
     public int row, col;
     public int elevation;
@@ -65,19 +65,15 @@ public class Tile implements TwoWayComparator<Tile> {
     }
 
     public enum Resource {
-        WHEAT (0),
-        FISH (1),
-        IRON (2);
-        public int type;
-        Resource(int t) {type = t;}
+        WHEAT,
+        FISH,
+        IRON;
+        private static Resource[] types = {WHEAT, FISH, IRON};
         static Resource fromInt(int t) {
-            switch (t) {
-                case 0: return WHEAT;
-                case 1: return FISH;
-                case 2: return IRON;
-                default:
-                    throw new IllegalArgumentException("Invalid terrain type");
+            if (t >= 0 && t < types.length) {
+                return types[t];
             }
+            throw new IllegalArgumentException("Invalid terrain type");
         }
     }
 
@@ -108,18 +104,5 @@ public class Tile implements TwoWayComparator<Tile> {
 
     public int compareX(Tile a, Tile b) {return a.row - b.row;}
     public int compareY(Tile a, Tile b) {return a.col - b.col;}
-
-    public Tile[] createChildren() {
-
-    }
-    /**
-     * @param a - First item T ("this")
-     * @param b - Second item T ("other")
-     * @return the default quadrant of b with respect to a,
-     * where mathematical quadrants are mapped respectively as
-     * 2 1 --> 0 1
-     * 3 4 --> 2 3
-     */
-    public int getCompareScores(T a, T b);
 
 }
