@@ -8,10 +8,42 @@ import java.util.Random;
  */
 public class DiamondSquare {
 
-    public Random random;
+    private Random random;
+    private int desiredWidth, desiredHeight, usedWidth;
+    private double amp, per;
 
-    public DiamondSquare() {
+    public DiamondSquare(int width, double amp, double per) {
+        this(width, width, amp, per);
+    }
 
+    public DiamondSquare(int width, int height, double amp, double per) {
+        this.amp = amp;
+        this.per = per;
+
+        desiredWidth = width;
+        desiredHeight = height;
+        double raw = Math.log(Math.max(width, height) - 1) / Math.log(2);
+        if (raw - Math.round(raw) < 0.01)
+            usedWidth = width;
+        else
+            usedWidth = (int)Math.pow(2, (int)raw + 1) + 1;
+    }
+
+    public double[][] getTerrain() {
+        double[][] temp = makeTable(0,0,0,0,usedWidth);
+        dS(temp, 0, 0, usedWidth - 1, amp, per);
+        if (temp.length == desiredWidth && temp[0].length == desiredHeight) {
+            return temp;
+        }
+        else {
+            double[][] returnThis = new double[desiredWidth][desiredHeight];
+            for (int r = 0; r < desiredWidth; r++) {
+                for (int c = 0; c < desiredHeight; c++) {
+                    returnThis[r][c] = temp[r][c];
+                }
+            }
+            return returnThis;
+        }
     }
 
     public void seed(long s) {
@@ -52,11 +84,10 @@ public class DiamondSquare {
         return t;
     }
 
-    void diamond(double[][] t, int sX, int sY, int width, double startAmp)
+    private void diamond(double[][] t, int sX, int sY, int width, double startAmp)
     {
         t[sX + width/2][sY + width/2] = (t[sX][sY] + t[sX+width][sY] + t[sX][sY+width] + t[sX+width][sY+width])/4;
         t[sX + width/2][sY + width/2] += startAmp*(random.nextDouble() - 0.5)*2;
-
         if (width > 1) {
             square(t, sX + width/2, sY, width, startAmp);
             square(t, sX, sY + width/2, width, startAmp);
@@ -65,7 +96,7 @@ public class DiamondSquare {
         }
     }
 
-    void square(double[][] t, int sX, int sY, int width, double startAmp)
+    private void square(double[][] t, int sX, int sY, int width, double startAmp)
     {
         if (sX - width/2 < 0)
             t[sX][sY] = (t[sX][sY - width/2] + t[sX][sY + width/2] + t[sX + width/2][sY])/3;

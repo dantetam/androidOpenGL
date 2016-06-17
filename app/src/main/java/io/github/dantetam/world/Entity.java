@@ -11,9 +11,11 @@ public class Entity {
     public List<Tile> locations;
     public String name;
     public Clan clan;
+    public List<Item> items;
 
     public Entity() {
         locations = new ArrayList<Tile>();
+        items = new ArrayList<Item>();
     }
 
     public void move(World world, Tile t) {

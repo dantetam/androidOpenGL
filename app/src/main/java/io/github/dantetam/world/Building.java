@@ -8,10 +8,8 @@ import java.util.List;
  */
 public class Building extends Entity {
 
-    public List<Item> items;
-
     public Building() {
-        items = new ArrayList<Item>();
+
     }
 
 }
