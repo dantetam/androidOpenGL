@@ -46,9 +46,25 @@ public class DiamondSquare {
         }
     }
 
-    public void seed(long s) {
+    public int[][] getIntTerrain() {
+        return toIntTable(getTerrain());
+    }
+
+    public static int[][] toIntTable(double[][] t) {
+        if (t.length == 0) return new int[][]{};
+        int[][] result = new int[t.length][t[0].length];
+        for (int r = 0; r < t.length; r++) {
+            for (int c = 0; c < t[0].length; c++) {
+                result[r][c] = (int) t[r][c];
+            }
+        }
+        return result;
+    }
+
+    public DiamondSquare seed(long s) {
         random = new Random();
         random.setSeed(s);
+        return this;
     }
 
     public static double[][] makeTable(double topLeft, double topRight, double botLeft, double botRight, int width)

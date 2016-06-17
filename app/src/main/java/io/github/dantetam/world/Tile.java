@@ -65,15 +65,20 @@ public class Tile {
     }
 
     public enum Resource {
+        NO_RESOURCE,
         WHEAT,
         FISH,
         IRON;
-        private static Resource[] types = {WHEAT, FISH, IRON};
-        static Resource fromInt(int t) {
+        private static Resource[] types = {NO_RESOURCE, WHEAT, FISH, IRON};
+        public static final int numResources = types.length;
+        public static Resource fromInt(int t) {
             if (t >= 0 && t < types.length) {
                 return types[t];
             }
             throw new IllegalArgumentException("Invalid terrain type");
+        }
+        public static Resource randomResource() {
+            return Resource.fromInt((int)(Math.random()*numResources) + 1);
         }
     }
 
