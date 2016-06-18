@@ -201,13 +201,15 @@ public class Solid {
         mCubeNormals.put(cubeNormalData).position(0);
     }
 
-    private final float[] modelMatrix = new float[16];; //Store in memory
+    private final float[] modelMatrix = new float[16]; //Store in memory
     public float[] getModelMatrix() {
         if (modelMatrix == null) {
             prepareMatrices();
         }
         return modelMatrix;
     }
+
+    //When any data of this solid is changed, this method should be called.
     public void prepareMatrices() {
         Matrix.setIdentityM(modelMatrix, 0);
         Matrix.translateM(modelMatrix, 0, position[0], position[1], position[2]);
@@ -261,6 +263,7 @@ public class Solid {
     }
     public void rotateAngle(float f) {
         rotation[0] = f;
+        prepareMatrices();
     }
 
 }

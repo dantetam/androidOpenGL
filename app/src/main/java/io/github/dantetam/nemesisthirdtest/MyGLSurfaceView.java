@@ -42,7 +42,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         // setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
-    private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
+    private final float TOUCH_SCALE_FACTOR = 30.0f / 320;
     private float mPreviousX;
     private float mPreviousY;
 
@@ -55,32 +55,26 @@ public class MyGLSurfaceView extends GLSurfaceView {
         float x = e.getX();
         float y = e.getY();
 
-        /*
         switch (e.getAction()) {
             case MotionEvent.ACTION_MOVE:
 
                 float dx = x - mPreviousX;
                 float dy = y - mPreviousY;
 
-                // reverse direction of rotation above the mid-line
-                if (y > getHeight() / 2) {
-                    dx = dx * -1 ;
-                }
+                mRenderer.camera.moveShift(dx * TOUCH_SCALE_FACTOR, 0, dy * TOUCH_SCALE_FACTOR);
+                mRenderer.camera.pointShift(dx * TOUCH_SCALE_FACTOR, 0, dy * TOUCH_SCALE_FACTOR);
 
-                // reverse direction of rotation to left of the mid-line
-                if (x < getWidth() / 2) {
-                    dy = dy * -1 ;
-                }
-
-                mRenderer.setAngle(
+                if (Math.random() < 0.1)
+                    System.out.println(dx + " " + dy);
+                /*mRenderer.setAngle(
                         mRenderer.getAngle() +
-                        ((dx + dy) * TOUCH_SCALE_FACTOR));  // = 180.0f / 320
+                        ((dx + dy) * TOUCH_SCALE_FACTOR));  // = 180.0f / 320*/
                 requestRender();
+                break;
         }
 
         mPreviousX = x;
         mPreviousY = y;
-        */
 
         return true;
     }

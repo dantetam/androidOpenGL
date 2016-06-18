@@ -51,7 +51,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final int mColorDataSize = 4;
     private final int mNormalDataSize = 3;
 
-    private Camera camera;
+    public Camera camera;
     private List<Model> models;
 
     private WorldHandler worldHandler;
@@ -85,6 +85,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public MyGLRenderer(Context context) {
         mActivityContext = context;
         camera = new Camera();
+        camera.moveTo(0, 20, -20);
+        camera.pointTo(0, 0, 0);
         models = new ArrayList<Model>();
         /*for (int i = 0; i < 10; i++) {
             Solid solid = new Solid();
@@ -128,9 +130,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the view matrix. This matrix can be said to represent the camera position.
         // NOTE: In OpenGL 1, a ModelView matrix is used, which is a combination of a model and
         // view matrix. In OpenGL 2, we can keep track of these matrices separately if we choose.
-        camera.moveTo(0, 20, -20);
-        camera.point(0, 0, 0);
-        camera.setViewMatrix(mViewMatrix);
+        //camera.moveTo(0, 20, -20);
+        //camera.point(0, 0, 0);
+        mViewMatrix = camera.getViewMatrix();
 
         final String vertexShader = getVertexShader();
         final String fragmentShader = getFragmentShader();
@@ -214,6 +216,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         for (Model model: models) {
             for (Solid solid: model.parts) {
                 drawSolid(solid);
+                //solid.rotateAngle(solid.angle() + 1);
             }
         }
         // Draw some cubes.
