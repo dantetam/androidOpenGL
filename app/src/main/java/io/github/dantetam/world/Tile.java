@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Dante on 6/13/2016.
  */
-public class Tile {
+public class Tile extends Representable {
 
     public int row, col;
     public int elevation;
@@ -27,7 +27,22 @@ public class Tile {
         public int type;
         Biome(int t) {type = t;}
         private static Biome[] types = {SEA, ICE, TUNDRA, DESERT, STEPPE, FOREST, RAINFOREST};
-        public static Biome fromInt(int n) {return types[n];}
+        private static float[][] colors = {
+                {0,0,1},
+                {0,0.5f,1},
+                {0.5f,0.5f,1},
+                {1,0.5f,0.5f},
+                {0,1,0},
+                {0,0.5f,0},
+                {1,0.5f,0}
+        };
+        public static Biome fromInt(int n) {
+            if (n >= 0 && n < types.length) {
+                return types[n];
+            }
+            throw new IllegalArgumentException("Invalid biome type: " + n);
+        }
+        public static float[] colorFromInt(int n) {return colors[n];}
         public static final int numBiomes = types.length;
     }
 
@@ -41,7 +56,12 @@ public class Tile {
         public int type;
         Terrain(int t) {type = t;}
         private static Terrain[] types = {PLAINS, HILLS, CLIFFS, MOUNTAINS, SHALLOW_SEA, DEEP_SEA};
-        public static Terrain fromInt(int n) {return types[n];}
+        public static Terrain fromInt(int n) {
+            if (n >= 0 && n < types.length) {
+                return types[n];
+            }
+            throw new IllegalArgumentException("Invalid terrain type: " + n);
+        }
         public static final int numTerrains = types.length;
     }
 
@@ -52,14 +72,14 @@ public class Tile {
         IRON;
         private static Resource[] types = {NO_RESOURCE, WHEAT, FISH, IRON};
         public static final int numResources = types.length;
-        public static Resource fromInt(int t) {
-            if (t >= 0 && t < types.length) {
-                return types[t];
+        public static Resource fromInt(int n) {
+            if (n >= 0 && n < types.length) {
+                return types[n];
             }
-            throw new IllegalArgumentException("Invalid terrain type");
+            throw new IllegalArgumentException("Invalid resource type: " + n);
         }
         public static Resource randomResource() {
-            return Resource.fromInt((int)(Math.random()*numResources) + 1);
+            return Resource.fromInt((int)(Math.random() * (numResources - 1)) + 1);
         }
     }
 

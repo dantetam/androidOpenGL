@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Dante on 6/13/2016.
  */
-public class Entity {
+public class Entity extends Representable {
 
     public List<Tile> locations;
     public String name;

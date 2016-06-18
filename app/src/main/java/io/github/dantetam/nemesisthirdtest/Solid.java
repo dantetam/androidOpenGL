@@ -68,7 +68,7 @@ public class Solid {
             };
 
     // R, G, B, A
-    public static final float[] cubeColorData =
+    public static float[] cubeColorData =
             {
                     // Front face (red)
                     1.0f, 0.0f, 0.0f, 1.0f,
@@ -184,6 +184,7 @@ public class Solid {
     private final float[] position = new float[3];
     private final float[] size = new float[3];
     private final float[] rotation = new float[4];
+    private final float[] color = new float[4];
 
     public Solid() {
         // Initialize the buffers.
@@ -217,6 +218,29 @@ public class Solid {
 
     public void rotate(float angle, float a, float b, float c) {
         rotation[0] = angle; rotation[1] = a; rotation[2] = b; rotation[3] = c;
+    }
+
+    public void color(float[] t) {
+        if (t.length == 3)
+            color(t[0], t[1], t[2], 1.0f);
+        else if (t.length == 4)
+            color(t[0], t[1], t[2], t[3]);
+        else
+            throw new IllegalArgumentException("Color argument is not of correct length");
+    }
+    public void color(float a, float b, float c, float d) {
+        color[0] = a; color[1] = b; color[2] = c; color[3] = d;
+
+        cubeColorData = new float[36*4];
+        for (int i = 0; i < 36; i++) {
+            cubeColorData[i] = a;
+            cubeColorData[i+1] = b;
+            cubeColorData[i+2] = c;
+            cubeColorData[i+3] = d;
+        }
+        mCubeColors = ByteBuffer.allocateDirect(cubeColorData.length * mBytesPerFloat)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        mCubeColors.put(cubeColorData).position(0);
     }
 
     public float angle() {

@@ -30,6 +30,7 @@ public class World {
                 tile.resources = new ArrayList<Tile.Resource>();
                 //tile.resources.add(Tile.Resource.fromInt(resources[r][c]));
                 tile.resources.add(resources[r][c]);
+                tiles[r][c] = tile;
             }
         }
     }

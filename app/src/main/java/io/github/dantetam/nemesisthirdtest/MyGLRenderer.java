@@ -54,6 +54,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Camera camera;
     private List<Solid> solids;
 
+    private WorldHandler worldHandler;
+
     /**
      * Used to hold a light centered on the origin in model space. We need a 4th coordinate so we can get translations to work when
      * we multiply this by our transformation matrices.
@@ -84,13 +86,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mActivityContext = context;
         camera = new Camera();
         solids = new ArrayList<Solid>();
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             Solid solid = new Solid();
             solid.move(randomFloat(-5, 5), randomFloat(-5, 5), randomFloat(-5, 5));
             solid.scale(randomFloat(1, 2), randomFloat(1, 2), randomFloat(1, 2));
             solid.rotate(randomFloat(0, 360), randomFloat(-5, 5), randomFloat(-5, 5), randomFloat(-5, 5));
             solids.add(solid);
-        }
+        }*/
+        worldHandler = new WorldHandler();
+        solids = worldHandler.worldRep();
     }
 
     private String vertexShaderMem = null;
@@ -124,8 +128,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the view matrix. This matrix can be said to represent the camera position.
         // NOTE: In OpenGL 1, a ModelView matrix is used, which is a combination of a model and
         // view matrix. In OpenGL 2, we can keep track of these matrices separately if we choose.
-        camera.moveTo(0, 10, -20);
-        camera.point(0, 0, 20);
+        camera.moveTo(10, 20, -20);
+        camera.point(10, 10, 20);
         camera.setViewMatrix(mViewMatrix);
 
         final String vertexShader = getVertexShader();
@@ -209,7 +213,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         for (Solid solid: solids) {
             drawSolid(solid);
-            solid.rotateAngle(solid.angle() + 1);
+            //solid.rotateAngle(solid.angle() + 1);
         }
         // Draw some cubes.
 
