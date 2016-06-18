@@ -26,6 +26,7 @@ public class WorldHandler {
         return tileRep();
     }
 
+    private static float tileWidth = 4;
     private List<Solid> tileRep() {
         if (tilesStored == null) {
             tilesStored = new ArrayList<Solid>();
@@ -33,9 +34,9 @@ public class WorldHandler {
                 for (int c = 0; c < world.cols; c++) {
                     Tile tile = world.getTile(r, c);
                     Solid solid = new Solid();
-                    solid.move(r, 0, c);
-                    solid.scale(1, 0.5f * tile.terrain.type, 1);
-                    //solid.rotate(0, 0, 0, 0);
+                    solid.move(r * tileWidth, 0.5f * (float) tile.terrain.type, c * tileWidth);
+                    solid.scale(tileWidth, tile.terrain.type, tileWidth);
+                    solid.rotate(0, 0, 1, 0);
                     solid.color(Tile.Biome.colorFromInt(tile.biome.type));
                     tilesStored.add(solid);
                 }

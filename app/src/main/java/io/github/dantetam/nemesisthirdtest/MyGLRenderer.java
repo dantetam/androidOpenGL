@@ -117,7 +117,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 glUnused, EGLConfig config) {
         // Set the background clear color to black.
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
         // Use culling to remove back faces.
         GLES20.glEnable(GLES20.GL_CULL_FACE);
@@ -128,8 +128,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the view matrix. This matrix can be said to represent the camera position.
         // NOTE: In OpenGL 1, a ModelView matrix is used, which is a combination of a model and
         // view matrix. In OpenGL 2, we can keep track of these matrices separately if we choose.
-        camera.moveTo(10, 20, -20);
-        camera.point(10, 10, 20);
+        camera.moveTo(0, 20, -20);
+        camera.point(0, 0, 0);
         camera.setViewMatrix(mViewMatrix);
 
         final String vertexShader = getVertexShader();
@@ -178,7 +178,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         final float bottom = -1.0f;
         final float top = 1.0f;
         final float near = 1.0f;
-        final float far = 50.0f;
+        final float far = 500.0f;
 
         Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
     }
@@ -211,9 +211,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
         Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 
-        for (Solid solid: solids) {
+        for (int i = 0; i < solids.size(); i++) {
+            Solid solid = solids.get(i);
             drawSolid(solid);
             //solid.rotateAngle(solid.angle() + 1);
+            /*if (i == 0) {
+                float[] t = solids.get(0).mCubeColors.asReadOnlyBuffer().array();
+                for (int j = 0; j < t.length; j++) {
+                    System.out.println(t[j]);
+                }
+            }*/
         }
         // Draw some cubes.
 

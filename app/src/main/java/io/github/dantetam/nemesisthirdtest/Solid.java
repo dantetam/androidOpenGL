@@ -181,10 +181,10 @@ public class Solid {
      */
     private final int mBytesPerFloat = 4;
 
-    private final float[] position = new float[3];
-    private final float[] size = new float[3];
-    private final float[] rotation = new float[4];
-    private final float[] color = new float[4];
+    public final float[] position = new float[3];
+    public final float[] size = new float[3];
+    public final float[] rotation = new float[4];
+    public final float[] color = new float[4];
 
     public Solid() {
         // Initialize the buffers.
@@ -233,13 +233,14 @@ public class Solid {
 
         cubeColorData = new float[36*4];
         for (int i = 0; i < 36; i++) {
-            cubeColorData[i] = a;
-            cubeColorData[i+1] = b;
-            cubeColorData[i+2] = c;
-            cubeColorData[i+3] = d;
+            cubeColorData[i*4] = a;
+            cubeColorData[i*4 + 1] = b;
+            cubeColorData[i*4 + 2] = c;
+            cubeColorData[i*4 + 3] = d;
         }
+        mCubeColors.clear();
         mCubeColors = ByteBuffer.allocateDirect(cubeColorData.length * mBytesPerFloat)
-                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+            .order(ByteOrder.nativeOrder()).asFloatBuffer();
         mCubeColors.put(cubeColorData).position(0);
     }
 
