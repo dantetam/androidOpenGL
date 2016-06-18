@@ -11,14 +11,16 @@ public class DiamondSquare {
     private Random random;
     private int desiredWidth, desiredHeight, usedWidth;
     private double amp, per;
+    private int maxAmp;
 
-    public DiamondSquare(int width, double amp, double per) {
-        this(width, width, amp, per);
+    public DiamondSquare(int width, double amp, double per, int maxAmp) {
+        this(width, width, amp, per, maxAmp);
     }
 
-    public DiamondSquare(int width, int height, double amp, double per) {
+    public DiamondSquare(int width, int height, double amp, double per, int maxAmp) {
         this.amp = amp;
         this.per = per;
+        this.maxAmp = maxAmp;
 
         desiredWidth = width;
         desiredHeight = height;
@@ -32,7 +34,7 @@ public class DiamondSquare {
     public double[][] getTerrain() {
         double[][] temp = makeTable(0,0,0,0,usedWidth);
         dS(temp, 0, 0, usedWidth - 1, amp, per);
-        if (temp.length == desiredWidth && temp[0].length == desiredHeight) {
+        /*if (temp.length == desiredWidth && temp[0].length == desiredHeight) {
             return temp;
         }
         else {
@@ -43,7 +45,14 @@ public class DiamondSquare {
                 }
             }
             return returnThis;
+        }*/
+        double[][] returnThis = new double[desiredWidth][desiredHeight];
+        for (int r = 0; r < desiredWidth; r++) {
+            for (int c = 0; c < desiredHeight; c++) {
+                returnThis[r][c] = Math.max(temp[r][c], maxAmp);
+            }
         }
+        return returnThis;
     }
 
     public int[][] getIntTerrain() {

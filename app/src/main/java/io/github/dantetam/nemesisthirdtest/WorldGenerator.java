@@ -16,8 +16,8 @@ public class WorldGenerator {
     }
 
     public void init() {
-        int[][] biomes = new DiamondSquare(world.rows, 6, 0.4).seed(870).getIntTerrain();
-        int[][] terrains = new DiamondSquare(world.rows, 6, 0.4).seed(0417).getIntTerrain();
+        int[][] biomes = new DiamondSquare(world.rows, 6, 0.4, Tile.Biome.numBiomes).seed(870).getIntTerrain();
+        int[][] terrains = new DiamondSquare(world.rows, 6, 0.4, 6, Tile.Terrain.numTerrains).seed(0417).getIntTerrain();
         Tile.Resource[][] resources = makeNewResources(world.rows, world.cols);
         world.init(biomes, terrains, resources);
     }

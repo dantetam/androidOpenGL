@@ -26,19 +26,9 @@ public class Tile {
         RAINFOREST (6);
         public int type;
         Biome(int t) {type = t;}
-        static Biome fromInt(int t) {
-            switch (t) {
-                case 0: return SEA;
-                case 1: return ICE;
-                case 2: return TUNDRA;
-                case 3: return DESERT;
-                case 4: return STEPPE;
-                case 5: return FOREST;
-                case 6: return RAINFOREST;
-                default:
-                    throw new IllegalArgumentException("Invalid biome type");
-            }
-        }
+        private static Biome[] types = {SEA, ICE, TUNDRA, DESERT, STEPPE, FOREST, RAINFOREST};
+        public static Biome fromInt(int n) {return types[n];}
+        public static final int numBiomes = types.length;
     }
 
     public enum Terrain {
@@ -50,18 +40,9 @@ public class Tile {
         DEEP_SEA (5);
         public int type;
         Terrain(int t) {type = t;}
-        static Terrain fromInt(int t) {
-            switch (t) {
-                case 0: return PLAINS;
-                case 1: return HILLS;
-                case 2: return CLIFFS;
-                case 3: return MOUNTAINS;
-                case 4: return SHALLOW_SEA;
-                case 5: return DEEP_SEA;
-                default:
-                    throw new IllegalArgumentException("Invalid terrain type");
-            }
-        }
+        private static Terrain[] types = {PLAINS, HILLS, CLIFFS, MOUNTAINS, SHALLOW_SEA, DEEP_SEA};
+        public static Terrain fromInt(int n) {return types[n];}
+        public static final int numTerrains = types.length;
     }
 
     public enum Resource {
