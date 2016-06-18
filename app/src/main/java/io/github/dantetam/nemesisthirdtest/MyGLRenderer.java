@@ -52,7 +52,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final int mNormalDataSize = 3;
 
     private Camera camera;
-    private List<Solid> solids;
+    private List<Model> models;
 
     private WorldHandler worldHandler;
 
@@ -85,7 +85,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public MyGLRenderer(Context context) {
         mActivityContext = context;
         camera = new Camera();
-        solids = new ArrayList<Solid>();
+        models = new ArrayList<Model>();
         /*for (int i = 0; i < 10; i++) {
             Solid solid = new Solid();
             solid.move(randomFloat(-5, 5), randomFloat(-5, 5), randomFloat(-5, 5));
@@ -94,7 +94,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             solids.add(solid);
         }*/
         worldHandler = new WorldHandler();
-        solids = worldHandler.worldRep();
+        models = worldHandler.worldRep();
     }
 
     private String vertexShaderMem = null;
@@ -211,16 +211,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
         Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 
-        for (int i = 0; i < solids.size(); i++) {
-            Solid solid = solids.get(i);
-            drawSolid(solid);
-            //solid.rotateAngle(solid.angle() + 1);
-            /*if (i == 0) {
-                float[] t = solids.get(0).mCubeColors.asReadOnlyBuffer().array();
-                for (int j = 0; j < t.length; j++) {
-                    System.out.println(t[j]);
-                }
-            }*/
+        for (Model model: models) {
+            for (Solid solid: model.parts) {
+                drawSolid(solid);
+            }
         }
         // Draw some cubes.
 
@@ -233,7 +227,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * Draws a cube.
      */
     private void drawSolid(Solid solid) {
-        solid.prepareMatrices(mModelMatrix);
+        mModelMatrix = solid.getModelMatrix();
 
         // Pass in the position information
         solid.mCubePositions.position(0);

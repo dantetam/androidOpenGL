@@ -21,7 +21,7 @@ public class World {
         rows = totalRows; cols = totalCols;
     }
 
-    public void init(int[][] biomes, int[][] terrain, Tile.Resource[][] resources) {
+    public void init(int[][] biomes, int[][] terrain, Tile.Resource[][] resources, int[][] elevations) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 Tile tile = new Tile(r, c);
@@ -30,6 +30,7 @@ public class World {
                 tile.resources = new ArrayList<Tile.Resource>();
                 //tile.resources.add(Tile.Resource.fromInt(resources[r][c]));
                 tile.resources.add(resources[r][c]);
+                tile.elevation = elevations[r][c];
                 tiles[r][c] = tile;
             }
         }

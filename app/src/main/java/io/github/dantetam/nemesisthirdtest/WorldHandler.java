@@ -14,7 +14,7 @@ public class WorldHandler {
 
     public World world;
     public WorldGenerator worldGenerator;
-    private List<Solid> tilesStored = null;
+    private Model[][] tilesStored = null;
 
     public WorldHandler() {
         world = new World(33, 33);
@@ -22,23 +22,31 @@ public class WorldHandler {
         worldGenerator.init();
     }
 
-    public List<Solid> worldRep() {
-        return tileRep();
+    public List<Model> worldRep() {
+        List<Model> list = new ArrayList<Model>();
+        Model[][] tiles = tileRep();
+        for (int r = 0; r < tiles.length; r++) {
+            for (int c = 0; c < tiles[0].length; c++) {
+                list.add(tiles[r][c]);
+            }
+        }
+        return list;
     }
 
     private static float tileWidth = 4;
-    private List<Solid> tileRep() {
+    private Model[][] tileRep() {
         if (tilesStored == null) {
-            tilesStored = new ArrayList<Solid>();
+            tilesStored = new Model[world.rows][world.cols];
             for (int r = 0; r < world.rows; r++) {
                 for (int c = 0; c < world.cols; c++) {
                     Tile tile = world.getTile(r, c);
                     Solid solid = new Solid();
-                    solid.move(r * tileWidth, 0.5f * (float) tile.terrain.type, c * tileWidth);
-                    solid.scale(tileWidth, tile.terrain.type, tileWidth);
+                    solid.move(r * tileWidth, 0.5f * (float) (tile.elevation), c * tileWidth);
+                    solid.scale(tileWidth, tile.elevation, tileWidth);
                     solid.rotate(0, 0, 1, 0);
                     solid.color(Tile.Biome.colorFromInt(tile.biome.type));
-                    tilesStored.add(solid);
+                    tilesStored[r][c] = new Model();
+                    tilesStored[r][c].add(solid);
                 }
             }
         }

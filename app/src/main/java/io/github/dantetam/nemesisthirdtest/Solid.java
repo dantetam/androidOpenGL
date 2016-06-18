@@ -68,7 +68,7 @@ public class Solid {
             };
 
     // R, G, B, A
-    public static float[] cubeColorData =
+    public final float[] cubeColorData =
             {
                     // Front face (red)
                     1.0f, 0.0f, 0.0f, 1.0f,
@@ -201,23 +201,33 @@ public class Solid {
         mCubeNormals.put(cubeNormalData).position(0);
     }
 
-    public void prepareMatrices(float[] mModelMatrix) {
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, position[0], position[1], position[2]);
-        Matrix.scaleM(mModelMatrix, 0, size[0], size[1], size[2]);
-        Matrix.rotateM(mModelMatrix, 0, rotation[0], rotation[1], rotation[2], rotation[3]);
+    private final float[] modelMatrix = new float[16];; //Store in memory
+    public float[] getModelMatrix() {
+        if (modelMatrix == null) {
+            prepareMatrices();
+        }
+        return modelMatrix;
+    }
+    public void prepareMatrices() {
+        Matrix.setIdentityM(modelMatrix, 0);
+        Matrix.translateM(modelMatrix, 0, position[0], position[1], position[2]);
+        Matrix.scaleM(modelMatrix, 0, size[0], size[1], size[2]);
+        Matrix.rotateM(modelMatrix, 0, rotation[0], rotation[1], rotation[2], rotation[3]);
     }
 
     public void move(float a, float b, float c) {
         position[0] = a; position[1] = b; position[2] = c;
+        prepareMatrices();
     }
 
     public void scale(float a, float b, float c) {
         size[0] = a; size[1] = b; size[2] = c;
+        prepareMatrices();
     }
 
     public void rotate(float angle, float a, float b, float c) {
         rotation[0] = angle; rotation[1] = a; rotation[2] = b; rotation[3] = c;
+        prepareMatrices();
     }
 
     public void color(float[] t) {
@@ -231,7 +241,7 @@ public class Solid {
     public void color(float a, float b, float c, float d) {
         color[0] = a; color[1] = b; color[2] = c; color[3] = d;
 
-        cubeColorData = new float[36*4];
+        //cubeColorData = new float[36*4];
         for (int i = 0; i < 36; i++) {
             cubeColorData[i*4] = a;
             cubeColorData[i*4 + 1] = b;
@@ -242,6 +252,8 @@ public class Solid {
         mCubeColors = ByteBuffer.allocateDirect(cubeColorData.length * mBytesPerFloat)
             .order(ByteOrder.nativeOrder()).asFloatBuffer();
         mCubeColors.put(cubeColorData).position(0);
+
+        prepareMatrices();
     }
 
     public float angle() {
