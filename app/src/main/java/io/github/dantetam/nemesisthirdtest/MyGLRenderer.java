@@ -234,8 +234,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private void drawSolid(Solid solid) {
         mModelMatrix = solid.getModelMatrix();
 
-        note to self: only bind the buffers once upon creation
-                look in tutorial 7 of how to free buffers after
+        //note to self: only bind the buffers once upon creation
+                //look in tutorial 7 of how to free buffers after
 
         // First, generate as many buffers as we need.
         // This will give us the OpenGL handles for these buffers.

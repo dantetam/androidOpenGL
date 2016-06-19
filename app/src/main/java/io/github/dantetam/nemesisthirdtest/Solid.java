@@ -2,6 +2,8 @@ package io.github.dantetam.nemesisthirdtest;
 
 import android.opengl.Matrix;
 
+import android.opengl.GLES20;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -186,9 +188,46 @@ public class Solid {
     public final float[] rotation = new float[4];
     public final float[] color = new float[4];
 
+    public final int mCubePositionsBufferIdx;
+    public final int mCubeNormalsBufferIdx;
+    public final int mCubeColorCoordsBufferIdx;
+
     public Solid() {
         // Initialize the buffers.
-        mCubePositions = ByteBuffer.allocateDirect(cubePositionData.length * mBytesPerFloat)
+        FloatBuffer[] floatBuffers = getBuffers(cubePositionData, cubeNormalData, cubeColorData);
+
+        FloatBuffer cubePositionsBuffer = floatBuffers[0];
+        FloatBuffer cubeNormalsBuffer = floatBuffers[1];
+        FloatBuffer cubeColorCoordinatesBuffer = floatBuffers[2];
+
+        // Second, copy these buffers into OpenGL's memory. After, we don't need to keep the client-side buffers around.
+        final int buffers[] = new int[3];
+        GLES20.glGenBuffers(3, buffers, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, cubePositionsBuffer.capacity() * mBytesPerFloat, cubePositionsBuffer, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[1]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, cubeNormalsBuffer.capacity() * mBytesPerFloat, cubeNormalsBuffer, GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[2]);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, cubeColorCoordinatesBuffer.capacity() * mBytesPerFloat, cubeColorCoordinatesBuffer,
+                GLES20.GL_STATIC_DRAW);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
+        mCubePositionsBufferIdx = buffers[0];
+        mCubeNormalsBufferIdx = buffers[1];
+        mCubeColorCoordsBufferIdx = buffers[2];
+
+        cubePositionsBuffer.limit(0);
+        cubePositionsBuffer = null;
+        cubeNormalsBuffer.limit(0);
+        cubeNormalsBuffer = null;
+        cubeTextureCoordinatesBuffer.limit(0);
+        cubeTextureCoordinatesBuffer = null;
+
+        /*mCubePositions = ByteBuffer.allocateDirect(cubePositionData.length * mBytesPerFloat)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         mCubePositions.put(cubePositionData).position(0);
 
@@ -198,7 +237,28 @@ public class Solid {
 
         mCubeNormals = ByteBuffer.allocateDirect(cubeNormalData.length * mBytesPerFloat)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
-        mCubeNormals.put(cubeNormalData).position(0);
+        mCubeNormals.put(cubeNormalData).position(0);*/
+    }
+
+    private FloatBuffer[] getBuffers(float[] cubePositions, float[] cubeNormals, float[] cubeColor) {
+        // First, copy cube information into client-side floating point buffers.
+        final FloatBuffer cubePositionsBuffer;
+        final FloatBuffer cubeNormalsBuffer;
+        final FloatBuffer cubeColorCoordinatesBuffer;
+
+        cubePositionsBuffer = ByteBuffer.allocateDirect(cubePositions.length * mBytesPerFloat)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        cubePositionsBuffer.put(cubePositions).position(0);
+
+        cubeNormalsBuffer = ByteBuffer.allocateDirect(cubeNormals.length * mBytesPerFloat)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        cubeNormalsBuffer.put(cubeNormals).position(0);
+
+        cubeColorCoordinatesBuffer = ByteBuffer.allocateDirect(cubeColor.length * mBytesPerFloat)
+                .order(ByteOrder.nativeOrder()).asFloatBuffer();
+        cubeColorCoordinatesBuffer.put(cubeColor).position(0);
+
+        return new FloatBuffer[] {cubePositionsBuffer, cubeNormalsBuffer, cubeColorCoordinatesBuffer};
     }
 
     private final float[] modelMatrix = new float[16]; //Store in memory

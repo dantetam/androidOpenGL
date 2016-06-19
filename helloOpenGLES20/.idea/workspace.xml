@@ -42,10 +42,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="19" column="59" selection-start-line="19" selection-start-column="59" selection-end-line="19" selection-end-column="59" />
-              <folding>
-                <element signature="e#305#306#0" expanded="false" />
-                <element signature="e#330#331#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -70,11 +67,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyGLRenderer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MyGLRenderer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLRenderer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.23517786">
-              <caret line="237" column="63" selection-start-line="237" selection-start-column="63" selection-end-line="237" selection-end-column="63" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="236" column="10" selection-start-line="236" selection-start-column="10" selection-end-line="236" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -139,12 +136,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Solid.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Solid.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="181" column="19" selection-start-line="181" selection-start-column="19" selection-end-line="181" selection-end-column="19" />
-              <folding />
+            <state vertical-scroll-proportion="0.36883628">
+              <caret line="205" column="0" selection-start-line="205" selection-start-column="0" selection-end-line="205" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -2213,8 +2212,8 @@
         <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/WorldGenerator.java" />
         <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Camera.java" />
         <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLSurfaceView.java" />
-        <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java" />
         <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLRenderer.java" />
+        <option value="$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java" />
       </list>
     </option>
   </component>
@@ -2260,6 +2259,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2270,6 +2271,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -2606,9 +2608,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2870,7 +2869,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32416952" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38258877" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3814433" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -3183,9 +3182,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3207,10 +3203,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="19" column="59" selection-start-line="19" selection-start-column="59" selection-end-line="19" selection-end-column="59" />
-          <folding>
-            <element signature="e#305#306#0" expanded="false" />
-            <element signature="e#330#331#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3279,19 +3272,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java">
+    <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLRenderer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="181" column="19" selection-start-line="181" selection-start-column="19" selection-end-line="181" selection-end-column="19" />
+          <caret line="236" column="10" selection-start-line="236" selection-start-column="10" selection-end-line="236" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/MyGLRenderer.java">
+    <entry file="file://$PROJECT_DIR$/../app/src/main/java/io/github/dantetam/nemesisthirdtest/Solid.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23517786">
-          <caret line="237" column="63" selection-start-line="237" selection-start-column="63" selection-end-line="237" selection-end-column="63" />
-          <folding />
+        <state vertical-scroll-proportion="0.36883628">
+          <caret line="205" column="0" selection-start-line="205" selection-start-column="0" selection-end-line="205" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
