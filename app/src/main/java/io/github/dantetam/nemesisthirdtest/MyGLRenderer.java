@@ -227,17 +227,41 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     /**
-     * Draws a cube.
+     * Draws a rectangular prism. Originally used pre-computed buffers in solid,
+     * now uses a VBO.
      */
+    private static final int BYTES_PER_FLOAT = 4;
     private void drawSolid(Solid solid) {
         mModelMatrix = solid.getModelMatrix();
 
+        note to self: only bind the buffers once upon creation
+                look in tutorial 7 of how to free buffers after
+
+        // First, generate as many buffers as we need.
+        // This will give us the OpenGL handles for these buffers.
+        final int buffers[] = new int[3];
+        GLES20.glGenBuffers(3, buffers, 0);
+        // Bind to the buffer. Future commands will affect this buffer specifically.
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
+        // Transfer data from client memory to the buffer.
+        // We can release the client memory after this call.
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, solid.mCubePositions.capacity() * BYTES_PER_FLOAT,
+                solid.mCubePositions, GLES20.GL_STATIC_DRAW);
+        // IMPORTANT: Unbind from the buffer when we're done with it.
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
+        GLES20.glEnableVertexAttribArray(mPositionHandle);
+        GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
         // Pass in the position information
-        solid.mCubePositions.position(0);
+        /*solid.mCubePositions.position(0);
         GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
                 0, solid.mCubePositions);
 
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
+        GLES20.glEnableVertexAttribArray(mPositionHandle);*/
 
         // Pass in the color information
         solid.mCubeColors.position(0);

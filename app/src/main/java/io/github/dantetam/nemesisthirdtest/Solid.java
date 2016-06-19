@@ -179,7 +179,7 @@ public class Solid {
     /**
      * How many bytes per float.
      */
-    private final int mBytesPerFloat = 4;
+    private static final int mBytesPerFloat = 4;
 
     public final float[] position = new float[3];
     public final float[] size = new float[3];
